@@ -10,7 +10,8 @@
 
 ### 2026-09-29 — uv migration
 - Branch renamed `claude/nice-wright-ctgbqn` → `chore/agents-md-setup-and-uv`; old remote branch not deleted yet.
-- Replaced requirements.txt with pyproject.toml + uv.lock; README uses `uv sync` / `uv run`. `numpy` still undeclared (transitive via pandas).
+- Replaced requirements.txt with pyproject.toml + uv.lock; README uses `uv sync` / `uv run`; declared `numpy`.
+- PR: alex-lt-kong-clone/wellness-tracker#1. Old remote branch deletion blocked (proxy 403); user to delete manually.
 
 ### 2026-09-29 — AGENTS.md repo update
 - Ignored `tmp/`, added PREFERENCE.md, trimmed long comments in src/*.py (net −30 LOC).
