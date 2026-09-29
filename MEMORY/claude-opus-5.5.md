@@ -8,6 +8,9 @@
 
 ## Chronological Activity Log
 
+### 2026-09-29 — 30-day release cooldown
+- `[tool.uv] exclude-newer = "30 days"` + `required-version >=0.9.17`; relocked with uv 0.9.17 (system uv 0.8.17 silently ignores it and relocks newer).
+
 ### 2026-09-29 — branch rename
 - PR #1 closed by user; branch renamed to `feat/home-screen-app-and-repo-cleanup`.
 - Stale remote branches `chore/agents-md-setup-and-uv`, `claude/nice-wright-ctgbqn` need manual deletion (proxy 403).
