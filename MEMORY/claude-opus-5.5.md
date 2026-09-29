@@ -8,6 +8,10 @@
 
 ## Chronological Activity Log
 
+### 2026-09-29 — Samsung Internet home-screen web app
+- Added manifest.webmanifest, sw.js (+ `/sw.js` route), apple-touch-icon; Chromium reports no installability errors.
+- Pushed to PR #1 per user. User wants the branch renamed; needs GitHub UI rename (session proxy blocks remote branch ops).
+
 ### 2026-09-29 — flake8 cleanup
 - Removed unused imports and `global app` in http_service.py; flake8 clean on src/.
 
