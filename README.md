@@ -10,6 +10,6 @@ This application does not handle authentication itself. If deployed behind a rev
 
 ## Setup
 
-Install dependencies with `pip install -r requirements.txt`. Create a `settings.json` in the project root to configure the app (host, port, CDN address, users, trackable items, etc.). See `src/plugins_router_sample.py` for how to wire up plugins. Run with `cd src && python app.py`.
+Install dependencies with `uv sync`. Create a `settings.json` in the project root to configure the app (host, port, CDN address, users, trackable items, etc.). See `src/plugins_router_sample.py` for how to wire up plugins. Run with `cd src && uv run python app.py`.
 
 Data is stored in a `database.sqlite` file created automatically in the project root on first run.
