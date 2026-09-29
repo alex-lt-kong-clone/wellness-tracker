@@ -8,6 +8,9 @@
 
 ## Chronological Activity Log
 
+### 2026-09-29 — flake8 cleanup
+- Removed unused imports and `global app` in http_service.py; flake8 clean on src/.
+
 ### 2026-09-29 — uv migration
 - Branch renamed `claude/nice-wright-ctgbqn` → `chore/agents-md-setup-and-uv`; old remote branch not deleted yet.
 - Replaced requirements.txt with pyproject.toml + uv.lock; README uses `uv sync` / `uv run`; declared `numpy`.
