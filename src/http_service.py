@@ -1,10 +1,8 @@
-from flask import Response, request, redirect, session
-from hashlib import sha256
+from flask import Response, request
 from waitress import serve
 
 
 import business_logic as bl
-import datetime as dt
 import data_access as da
 import flask
 import global_vars as gv
@@ -154,7 +152,7 @@ def summary():
 
 def start_http_service():
 
-    global app, advertised_address
+    global advertised_address
     app.config['JSON_AS_ASCII'] = False
     app.json.sort_keys = False  # type: ignore
     app.config.update(
