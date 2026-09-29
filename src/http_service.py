@@ -33,6 +33,11 @@ def index():
         flask.render_template('record.html', **kwargs))
 
 
+@app.route('/sw.js', methods=['GET'])
+def service_worker():
+    return app.send_static_file('sw.js')
+
+
 @app.route('/get-available-items/', methods=['GET'])
 def get_available_items():
 
