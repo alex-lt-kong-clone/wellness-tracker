@@ -8,6 +8,10 @@
 
 ## Chronological Activity Log
 
+### 2026-09-29 — branch rename
+- PR #1 closed by user; branch renamed to `feat/home-screen-app-and-repo-cleanup`.
+- Stale remote branches `chore/agents-md-setup-and-uv`, `claude/nice-wright-ctgbqn` need manual deletion (proxy 403).
+
 ### 2026-09-29 — Samsung Internet home-screen web app
 - Added manifest.webmanifest, sw.js (+ `/sw.js` route), apple-touch-icon; Chromium reports no installability errors.
 - Pushed to PR #1 per user. User wants the branch renamed; needs GitHub UI rename (session proxy blocks remote branch ops).
