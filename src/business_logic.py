@@ -5,19 +5,15 @@ import datetime as dt
 import global_vars as gv
 import numpy as np
 
-# Maximum number of data points to return to the frontend.
-# Longer time horizons are downsampled to this limit to keep
-# charts responsive on mobile devices.
+# Keeps charts responsive on mobile
 MAX_CHART_POINTS = 200
 
 
 def _downsample(df, max_points: int):
-    """Downsample a DataFrame to at most max_points rows using evenly-spaced
-    indices, always preserving the first and last rows."""
+    """Evenly sample rows, keeping the first and last."""
     n = len(df)
     if n <= max_points:
         return df
-    # Generate evenly spaced indices including 0 and n-1
     indices = np.linspace(0, n - 1, max_points, dtype=int)
     indices = np.unique(indices)  # remove duplicates from rounding
     return df.iloc[indices].reset_index(drop=True)
@@ -33,8 +29,7 @@ def get_data_by_duration(days: int, username: str,
     df.loc[:, 'value_ema'] = df['value_raw'].ewm(
         span=span, adjust=False).mean().round(2)
 
-    # Bollinger Bands: EMA ± 2 * EWM standard deviation.
-    # Using EWM std to match the EMA weighting (recent data weighted more).
+    # Bollinger Bands; EWM std matches the EMA weighting
     ewm_std = df['value_raw'].ewm(span=span, adjust=False).std().fillna(0)
     df.loc[:, 'band_upper'] = (df['value_ema'] + 2 * ewm_std).round(2)
     df.loc[:, 'band_lower'] = (df['value_ema'] - 2 * ewm_std).round(2)
@@ -71,9 +66,7 @@ def get_latest_data(username: str, value_type: str) -> DtoData:
 
 def submit_data(username: str, value_type: str,
                 value: float, remark: str) -> None:
+    # Submissions within submission_diff_tol overwrite the previous one
     submission_time = dt.datetime.now() - dt.timedelta(
         seconds=gv.settings['app']['submission_diff_tol'])
-    # If the interval between two submissions are not larger than this number
-    # of minutes, the second submission will be considered the same as the
-    # first submission and overwrite the first submission.
     da.write_data(submission_time, username, value_type, value, remark)

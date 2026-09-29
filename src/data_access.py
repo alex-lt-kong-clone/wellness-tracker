@@ -50,10 +50,7 @@ def get_average_value(username: str, value_type: str,
                 WHERE username = ? AND value_type = ?
             """, (username, value_type))
         else:
-            # Use parameter binding via '-' || ? || ' day' instead of
-            # .format() to avoid SQL injection — SQLite builds the date
-            # string by concatenation at execution time, keeping the
-            # user-supplied value out of the SQL template.
+            # Bound parameter, not .format(), to prevent SQL injection
             cur.execute("""
                 SELECT COUNT(value), AVG(value)
                 FROM user_data
@@ -98,14 +95,13 @@ def write_data(submission_time: dt.datetime, username: str,
         """, (submission_time, username, value_type))
         results = cursor.fetchall()
         if len(results) > 0:
+            # >1 match possible if submission_diff_tol was changed
             cursor.execute("""
                 UPDATE user_data
                 SET record_time = ?, value = ?, remark = ?
                 WHERE record_time = ? AND username = ?
             """, (dt.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
                   value, remark, results[-1][1], username))
-            # len(results) could be greater than 1 suppose server side changes
-            # the submission_diff_tol config item
         else:
             cursor.execute("""
                 INSERT INTO user_data
@@ -160,8 +156,7 @@ def get_data_by_duration(username: str, value_type: str, days: int) -> pd.DataFr
                 ORDER BY record_time ASC
             """, con=con, params=[username, value_type])
         else:
-            # Use '||' concatenation with a bound parameter instead of
-            # .format() to prevent SQL injection.
+            # Bound parameter, not .format(), to prevent SQL injection
             df = pd.read_sql("""
                 SELECT record_time, value AS value_raw, remark
                 FROM user_data

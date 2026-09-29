@@ -16,9 +16,7 @@ advertised_address = ''
 
 
 def get_username() -> str:
-    """Return the authenticated username from the reverse proxy's auth
-    headers, or fall back to the default_user from settings if no proxy
-    is in front of the app."""
+    """Reverse-proxy auth username, else settings' default_user."""
     if request.authorization and request.authorization.username:
         return request.authorization.username
     return gv.settings['app'].get('default_user', 'default')
@@ -61,16 +59,7 @@ def submit_data():
 
 @app.route('/get-latest-data/', methods=['GET'])
 def get_latest_data():
-    # Can we combine bl.get_latest_data() and bl.get_data_by_duration()?
-    # Answer is NO.
-    # bl.get_data_by_duration() returns data from the past N days,
-    # if there is no data, it returns an empty set.
-    # bl.get_latest_data() returns the latest data, no matter how far ago
-    # that data is.
-    # Using bl.get_data_by_duration() to achieve the function of
-    # bl.get_latest_data() means we need to set N to a very large number,
-    # which is not a good idea.
-
+    # Not merged with get_data_by_duration(): the latest entry may predate N days
     try:
         value_type = str(request.args.get('value_type'))
     except Exception:
@@ -138,7 +127,6 @@ def summary():
         value_type = str(request.args.get('value_type'))
         if value_type not in gv.settings['items']:
             raise ValueError('')
-            # the program will work even without this check
     except Exception:
         return Response('''
         <p>Data type not specified</p>
@@ -170,15 +158,11 @@ def start_http_service():
     app.config['JSON_AS_ASCII'] = False
     app.json.sort_keys = False  # type: ignore
     app.config.update(
-        # SESSION_COOKIE_SECURE=True means we accept HTTPS connections only
         SESSION_COOKIE_SECURE=False,
         SESSION_COOKIE_HTTPONLY=True,
-        # If this is set to True, client-side JavaScript will not be able to
-        # access the session cookie.
         SESSION_COOKIE_SAMESITE='Lax',
     )
-    # advertised_address: the app's address (including protocol and port) on
-    # the Internet
+    # Public URL, incl. protocol and port
     advertised_address = gv.settings['app']['advertised_address']
 
     da.prepare_database()
